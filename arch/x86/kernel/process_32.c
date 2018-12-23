@@ -55,6 +55,8 @@
 #include <asm/debugreg.h>
 #include <asm/switch_to.h>
 
+#include <linux/project2.h>
+
 asmlinkage void ret_from_fork(void) __asm__("ret_from_fork");
 asmlinkage void ret_from_kernel_thread(void) __asm__("ret_from_kernel_thread");
 
@@ -242,6 +244,9 @@ EXPORT_SYMBOL_GPL(start_thread);
  * the task-switch, and shows up in ret_from_fork in entry.S,
  * for example.
  */
+
+extern struct PROCESSTIME pt;
+
 __visible __notrace_funcgraph struct task_struct *
 __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 {
@@ -308,6 +313,9 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 	 * done before math_state_restore, so the TS bit is up
 	 * to date.
 	 */
+	if( next_p->pid == pt.pid ){
+		pt.pswcount++;
+	}
 	arch_end_context_switch(next_p);
 
 	this_cpu_write(kernel_stack,

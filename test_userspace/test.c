@@ -21,6 +21,6 @@ int main()
          printf("System call 'listProcessInfo' did not execute as expected\n");
 #endif 
           
-    long int ret_status = syscall(360, 111, 0xFFFF0000); // 323 is the syscall number
+    long int ret_status = syscall(360, 5129, 0xFFFF0000); // 323 is the syscall number
      return 0;
 }
