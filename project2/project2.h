@@ -10,6 +10,8 @@ struct PROCESSTIME {
 		int pid;
 		int pswcount; //process switch counter
 		int ioswcount; // IO switch counter;
+		struct timespec nprocess; 
+		struct timespec niotime; 
 		struct timeval process; // process timeing
 		struct timeval iotime;  // iotimeing 
 
@@ -18,6 +20,11 @@ struct PROCESSTIME {
 		struct timeval temp2;
 		struct timeval temp3;
 		struct timeval temp4;
+		struct timespec ntemp1;
+		struct timespec ntemp2;
+		struct timespec ntemp3;
+		struct timespec ntemp4;
+
 }; 
 
 

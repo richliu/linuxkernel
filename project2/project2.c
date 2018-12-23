@@ -19,7 +19,11 @@ asmlinkage long sys_linux_survey_TT(int pid, char *buf) {
 if (localinit == 0){
 	//pt = &ppt;
 	memset(&pt,0, sizeof(struct PROCESSTIME));
+	pt.pid = pid;
 	localinit = 1;
+}else{
+	printk("pid:%d count:%d \n", pt.pid, pt.pswcount);
+	printk("seconds:%lu.%09lu \n", (unsigned long)pt.nprocess.tv_sec, (unsigned long)pt.nprocess.tv_nsec);
 }
 
 
