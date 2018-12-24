@@ -2788,13 +2788,13 @@ again:
  *          - return from syscall or exception to user-space
  *          - return from interrupt-handler to user-space
  */
+static	int pj2enable=0;
 static void __sched __schedule(void)
 {
 	struct task_struct *prev, *next;
 	unsigned long *switch_count;
 	struct rq *rq;
 	int cpu;
-	int pj2enable=0;
 
 
 need_resched:
