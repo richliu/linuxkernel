@@ -90,6 +90,9 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/sched.h>
 
+#include <linux/project2.h>
+extern struct PROCESSTIME pt;
+
 void start_bandwidth_timer(struct hrtimer *period_timer, ktime_t period)
 {
 	unsigned long delta;
@@ -2360,6 +2363,8 @@ context_switch(struct rq *rq, struct task_struct *prev,
 	 * combine the page table reload and the switch backend into
 	 * one hypercall.
 	 */
+
+
 	arch_start_context_switch(prev);
 
 	if (!mm) {
@@ -2789,6 +2794,8 @@ static void __sched __schedule(void)
 	unsigned long *switch_count;
 	struct rq *rq;
 	int cpu;
+	int pj2enable=0;
+
 
 need_resched:
 	preempt_disable();
@@ -2847,12 +2854,22 @@ need_resched:
 		rq->curr = next;
 		++*switch_count;
 
+		if( pj2enable == 1 && prev->pid == pt.pid ){
+			getnstimeofday(&pt.ntemp2);
+			pt.nprocess = timespec_sub(pt.ntemp2, pt.ntemp1);
+			pj2enable = 0;
+		}else if( next->pid == pt.pid){
+			pt.pswcount++;
+			getnstimeofday(&pt.ntemp1);
+			pj2enable = 1;
+		}
 		rq = context_switch(rq, prev, next); /* unlocks the rq */
 		cpu = cpu_of(rq);
 	} else
 		raw_spin_unlock_irq(&rq->lock);
 
 	post_schedule(rq);
+	
 
 	sched_preempt_enable_no_resched();
 	if (need_resched())

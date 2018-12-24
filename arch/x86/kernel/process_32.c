@@ -313,15 +313,19 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 	 * done before math_state_restore, so the TS bit is up
 	 * to date.
 	 */
+#if 0
 	if( next_p->pid == pt.pid ){
 		pt.pswcount++;
 		getnstimeofday(&pt.ntemp1);
 	}
+#endif
 	arch_end_context_switch(next_p);
+#if 0
 	if( next_p->pid == pt.pid ){
 		getnstimeofday(&pt.ntemp2);
 		pt.nprocess = timespec_sub(pt.ntemp2, pt.ntemp1);
 	}
+#endif 
 
 	this_cpu_write(kernel_stack,
 		  (unsigned long)task_stack_page(next_p) +

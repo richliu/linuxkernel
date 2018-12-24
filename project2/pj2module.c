@@ -28,7 +28,7 @@ long project2_sys_func(int pid, char *result)
   struct mm_struct *mm;
 
   printk("PID: %d \n", pid);
-  printk("Process switch count : %d \n", pt.pswcount);
+  printk("Process switch count : %ld \n", pt.pswcount);
   pt.pid = pid;
 
   return 0;

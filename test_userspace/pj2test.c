@@ -17,9 +17,9 @@ struct process_switch_info
 
 
 struct PROCESSTIME {
-        int pid;
-        int pswcount; //process switch counter
-        int ioswcount; // IO switch counter;
+        pid_t pid;
+        unsigned long pswcount; //process switch counter
+        unsigned long ioswcount; // IO switch counter;
         struct timespec nprocess;
         struct timespec niotime;
         struct timeval process; // process timeing
@@ -45,6 +45,7 @@ int              a;
 unsigned int     i=0;
 struct timeval   start, end;
 long int ret_status; 
+unsigned long temp_ul;
 
 pid_t current_pid; 
 
@@ -65,13 +66,11 @@ for(i=1;i<=TOTAL_ITERATION_NUM;i++)
 //get_process_switch_info(&ps_info);    //new system call
 ret_status = syscall(360, current_pid, &pt); // get systemcall  result 
 
-/*
 gettimeofday(&end, NULL);             //total time of existence - end 
 printf("The process spent %ld uses in the system after it stated its execution.\n", 
 ((end.tv_sec * 1000000 + end.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec)));
-temp_ul=(ps_info.time.tv_sec * 1000000 + ps_info.time.tv_usec);
-printf("The process has made %ld process switches\n", ps_info.counter);
-printf("This process has idle %ul usecs\n", temp_ul); 
-*/
+temp_ul=(pt.nprocess.tv_sec * 1000000000 + pt.nprocess.tv_nsec);
+printf("The process has made %ld process switches\n", pt.pswcount);
+printf("This process has idle %lu nsecs\n", temp_ul); 
 
 }

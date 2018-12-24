@@ -7,9 +7,9 @@ extern int project2_hook_ready;
 extern int (*project2_hook)(int pid, char *result);
 
 struct PROCESSTIME {
-		int pid;
-		int pswcount; //process switch counter
-		int ioswcount; // IO switch counter;
+		pid_t pid;
+		unsigned long pswcount; //process switch counter
+		unsigned long ioswcount; // IO switch counter;
 		struct timespec nprocess; 
 		struct timespec niotime; 
 		struct timeval process; // process timeing

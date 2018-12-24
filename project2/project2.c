@@ -16,14 +16,15 @@ int localinit = 0;
 asmlinkage long sys_linux_survey_TT(int pid, char *buf) {
 	printk("[%s] pid: %d : buf:%p \n", __FUNCTION__, pid, buf);
 
-if (localinit == 0){
+if (localinit == 0 || pt.pid != pid){
 	//pt = &ppt;
 	memset(&pt,0, sizeof(struct PROCESSTIME));
-	pt.pid = pid;
 	localinit = 1;
+	pt.pid = pid;
 }else{
-	printk("pid:%d count:%d \n", pt.pid, pt.pswcount);
+	printk("pid:%d count:%ld \n", pt.pid, pt.pswcount);
 	printk("seconds:%lu.%09lu \n", (unsigned long)pt.nprocess.tv_sec, (unsigned long)pt.nprocess.tv_nsec);
+	copy_to_user(buf,&pt,sizeof(struct PROCESSTIME));
 }
 
 
