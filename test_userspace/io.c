@@ -53,7 +53,7 @@ gettimeofday(&start, NULL);                 //total time of existence - begin
 
 if((out=fopen("io_bound.data","w"))!=NULL) {
 		c=38;
-		for(a=0; a<100000;a++){
+		for(a=0; a<10000000;a++){
 				putc(c,out);
 				if(++c>126)
 				c=38;
