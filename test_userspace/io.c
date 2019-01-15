@@ -5,6 +5,10 @@
 #include <time.h>
 #include <sys/time.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 struct process_switch_info
 {
 	unsigned int   counter;
@@ -36,6 +40,7 @@ struct PROCESSTIME pt;
 
 int main() {
 FILE             *out;
+int fd;
 char             c;
 int              a;
 struct timeval   start, end;
@@ -51,14 +56,17 @@ printf("Current Pid :%d \n", current_pid);
 ret_status = syscall(360, current_pid, &pt); // start systemcall 
 gettimeofday(&start, NULL);                 //total time of existence - begin
 
-if((out=fopen("io_bound.data","w"))!=NULL) {
+//if((out=fopen("io_bound.data","w"))!=NULL) {
+if((fd=open("io_bound.data",O_WRONLY | O_CREAT, 0777))!=-1) {
 		c=38;
-		for(a=0; a<10000000;a++){
-				putc(c,out);
+		for(a=0; a<100000;a++){
+				//putc(c,out);
+				write(fd,&c,1);
 				if(++c>126)
 				c=38;
 		}
-		fclose(out);
+//fclose(out);
+		close(fd);
 }
 else
 {
